@@ -25,8 +25,66 @@ int main (int argc, char *argv[]) {
         printf("Use login.bin behind %s\n", argv[0]);
         exit(1);
     }
-}
 
-struct user u;
-char username[25];
-char password[25];
+    struct user_login u;
+    char username[25];
+    char password[25];
+    int logged_in = 0;
+
+
+    FILE *file = fopen(argv[1], "ab");
+    if (file == NULL) {
+        printf("Error creating log file!\n");
+        exit(1);
+    }
+
+    int registered = 0;
+    printf("Do you want to register? (y/n) : " );
+    char choice;
+    scanf("%c", &choice);
+
+    if (choice == 'y') {
+        registered = 1;
+
+        printf("enter username: ");
+        scanf("%s", u.username);
+
+        printf("enter password: ");
+        scanf("%s", u.password);
+
+        fwrite(&u, sizeof(struct user_login), 1, file);
+
+        printf("User data has been saved saved to log file.\n");
+        fclose(file);
+    } if(registered) {
+        printf("Please login to continue.\n");
+        file = fopen(argv[1], "rb");
+        
+        if(file == NULL) {
+            printf("Error opening log file!.\n");
+            exit(1);
+        }
+        printf("enter username: ");
+        scanf("%s", username);
+
+        while(fread(&u, sizeof(struct user_login), 1, file)) {
+            if(strcmp(u.username, username) == 0) {
+                printf("enter password: ");
+                scanf("%s", password);
+
+                if(strcmp(u.password, password) == 0) {
+                    printf("login successful!\n\n");
+                    logged_in = 1;
+                    break;
+                } else {
+                    printf("Invalid password!\n\n");
+                    break;
+                }
+            }
+        }
+        if (!logged_in) {
+            printf("User not faound!\n");
+        } fclose(file);
+    } if (!logged_in) {
+        return 0;
+    } fclose(file);
