@@ -88,3 +88,31 @@ int main (int argc, char *argv[]) {
     } if (!logged_in) {
         return 0;
     } fclose(file);
+printf("Welcome to game WHO WANTS TO BE A MILLIONAIRE, %s!\n\n", u.username);
+
+    struct quiz quiz[5] = {
+        {"what is the capital city of China?", {"1.Tionghoa", "2.Beijing", "3.Seoul", "4.Hong Kong"}, 2},
+        {"what is the capital city of Australia?", {"1.Sydney", "2.Canberra", "3.Melbourne", "4.Jakarta"}, 2},
+        {"what is the capital city of Afghanisthan?", {"1.Ankara", "2.Aleppo", "3.Mosul", "4.Kabul"}, 4},
+        {"what is the capital city of Japan?", {"1.Tokyo", "2.Shinjuku", "3.Osaka", "4.Shibuya"}, 1},
+        {"what is the capital city of Italy ?", {"1.Milan", "2.Firenze", "3.Roma", "4.Vatikan"}, 3},
+    };
+    int score = 0;
+    for (int i=0; i < 5; i++) {
+    printf("Question %d: \n", i+1);
+    print_question(quiz[i]);
+    printf("Enter the Answer (1-4) : ");
+    int answer;
+    scanf("%d", &answer);
+    if (answer == quiz[i].correct_answer) {
+        printf("TRUE!\n\n");
+        score += 20;
+    } else {
+        printf("WRONG!\n\n");
+    }
+}
+printf("Game Finished!\n\n");
+printf("Your score is : %d\n", score);
+
+return 0;
+}
